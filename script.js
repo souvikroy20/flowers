@@ -65,49 +65,8 @@ class Flower {
   }
 }
 
-// Heart class represents an animated heart
-class Heart {
-  constructor(x, y) {
-    this.x = x; // X-coordinate of the heart's position
-    this.y = y; // Y-coordinate of the heart's position
-    this.size = random(20, 50); // Size of the heart
-    this.col = color(random(150, 255), random(100, 200), random(150, 255)); // Color of the heart
-    this.opacity = 255; // Start fully opaque
-    this.fadeSpeed = random(0.9, 1.8); // Speed at which the heart fades out
-  }
-
-  // Display the heart shape
-  display() {
-    push();
-    translate(this.x, this.y);
-    fill(red(this.col), green(this.col), blue(this.col), this.opacity);
-    noStroke();
-    beginShape();
-    for (let a = 0; a < TWO_PI; a += 0.1) {
-      const r = this.size / 16;
-      const x = r * 16 * pow(sin(a), 3);
-      const y = -r * (13 * cos(a) - 5 * cos(2 * a) - 2 * cos(3 * a) - cos(4 * a));
-      vertex(x, y);
-    }
-    endShape(CLOSE);
-    pop();
-  }
-
-  // Update the heart's opacity
-  update() {
-    this.opacity -= this.fadeSpeed; // Fade out the heart
-    this.display();
-  }
-
-  // Check if the heart has fully faded out
-  isFaded() {
-    return this.opacity <= 0;
-  }
-}
-
 // Arrays to store the flowers and hearts
 let flowers = [];
-let hearts = [];
 
 // Background color
 let bg = '#0C2C40';
@@ -137,7 +96,6 @@ function setup() {
   canvas.parent(container);
   background(bg);
   flowers = [];
-  hearts = [];
 }
 
 // Draw function to render the flowers and hearts on the canvas
@@ -151,19 +109,8 @@ function draw() {
     }
   }
 
-  for (let i = hearts.length - 1; i >= 0; i--) {
-    hearts[i].update();
-    if (hearts[i].isFaded()) {
-      hearts.splice(i, 1); // Remove faded hearts
-    }
-  }
-
   if (frameCount % 20 === 0) { // Add a new flower every 20 frames
     addFlower();
-  }
-
-  if (frameCount % 30 === 0) { // Add a new heart every 30 frames
-    addHeart();
   }
 }
 
@@ -175,13 +122,6 @@ function addFlower() {
   flowers.push(newFlower);
 }
 
-// Function to add a new heart to the canvas
-function addHeart() {
-  let x = random(width);
-  let y = random(height);
-  let newHeart = new Heart(x, y);
-  hearts.push(newHeart);
-}
 
 // Function to handle window resizing
 function windowResized() {
